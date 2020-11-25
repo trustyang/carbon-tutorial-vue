@@ -14,14 +14,11 @@
 <script>
 export default {
   name: 'LinkList',
-  props: {
-    url: String,
-    homepageUrl: String
-  }
+  props: { url: String, homepageUrl: String }
 };
 </script>
 
-<style lang="scss">
+<style>
 .link-list {
   display: flex;
 }
