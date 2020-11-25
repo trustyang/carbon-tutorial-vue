@@ -61,10 +61,16 @@ export default {
 </script>
 
 <template>
-  <repo-table
-    :headers="headers"
-    :rows="rows"
-    title="Carbon Repositories"
-    helperText="A collection of public Carbon repositories."
-  />
+  <div class="bx--grid bx--grid--full-width bx--grid--no-gutter repo-page">
+    <div class="bx--row repo-page__r1" >
+      <div class="bx--col-lg-16" style="width: 100%">
+        <repo-table
+          :headers="headers"
+          :rows="rows"
+          title="Carbon Repositories"
+          helperText="A collection of public Carbon repositories."
+        />
+      </div>
+    </div>
+  </div>
 </template>
