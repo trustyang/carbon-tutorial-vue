@@ -51,43 +51,72 @@ const headers = [
   { key: 'stars', header: 'Stars' },
   { key: 'links', header: 'Links' }
 ];
-const rows = [
-  {
-    id: '1',
-    name: 'Repo 1',
-    createdAt: 'Date',
-    updatedAt: 'Date',
-    issueCount: '123',
-    stars: '456',
-    links: 'Links'
-  },
-  {
-    id: '2',
-    name: 'Repo 2',
-    createdAt: 'Date',
-    updatedAt: 'Date',
-    issueCount: '123',
-    stars: '456',
-    links: 'Links'
-  },
-  {
-    id: '3',
-    name: 'Repo 3',
-    createdAt: 'Date',
-    updatedAt: 'Date',
-    issueCount: '123',
-    stars: '456',
-    links: 'Links'
-  }
-];
+// const rows = [
+//   {
+//     id: '1',
+//     name: 'Repo 1',
+//     createdAt: 'Date',
+//     updatedAt: 'Date',
+//     issueCount: '123',
+//     stars: '456',
+//     links: 'Links'
+//   },
+//   {
+//     id: '2',
+//     name: 'Repo 2',
+//     createdAt: 'Date',
+//     updatedAt: 'Date',
+//     issueCount: '123',
+//     stars: '456',
+//     links: 'Links'
+//   },
+//   {
+//     id: '3',
+//     name: 'Repo 3',
+//     createdAt: 'Date',
+//     updatedAt: 'Date',
+//     issueCount: '123',
+//     stars: '456',
+//     links: 'Links'
+//   }
+// ];
 export default {
   name: 'RepoPage',
   components: { RepoTable },
   data() {
     return {
       headers,
-      rows
+      pageSize: 0,
+      pageStart: 0,
+      page: 0
     };
+  },
+  computed: {
+    rows() {
+      if (!this.organization) {
+        return [];
+      } else {
+        return this.organization.repositories.nodes.map(row => ({
+          ...row,
+          key: row.id,
+          stars: row.stargazers.totalCount,
+          issueCount: row.issues.totalCount,
+          createdAt: new Date(row.createdAt).toLocaleDateString(),
+          updatedAt: new Date(row.updatedAt).toLocaleDateString(),
+          links: { url: row.url, homepageUrl: row.homepageUrl }
+        }));
+      }
+    },
+    pagedRows() {
+      return this.rows.slice(this.pageStart, this.pageStart + this.pageSize);
+    }
+  },
+  methods: {
+    onPagination(val) {
+      this.pageSize = val.length;
+      this.pageStart = val.start;
+      this.page = val.page;
+    }
   },
   apollo: {
     organization: REPO_QUERY
@@ -99,12 +128,15 @@ export default {
   <div class="bx--grid bx--grid--full-width bx--grid--no-gutter repo-page">
     <div class="bx--row repo-page__r1">
       <div class="bx--col-lg-16" style="width: 100%">
-        {{ this.organization }}
+        <!-- {{ this.organization }} -->
         <repo-table
           :headers="headers"
-          :rows="rows"
+          :rows="pagedRows"
+          :totalRows="rows.length"
+          @pagination="onPagination"
           title="Carbon Repositories"
           helperText="A collection of public Carbon repositories."
+          :loading="$apollo.loading"
         />
       </div>
     </div>
