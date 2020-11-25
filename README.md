@@ -2,7 +2,7 @@
 
 This tutorial will guide you in creating a Vue app with the [Carbon Design System](https://www.carbondesignsystem.com/). We’ll teach you the ins and outs of using Carbon components, while introducing web development best practices along the way.
 
-Get started by visiting the [tutorial instructions](./docs/overview).
+Get started by visiting the [tutorial instructions](https://www.carbondesignsystem.com/tutorial/vue/overview).
 
 ## Available Scripts
 
@@ -48,6 +48,5 @@ Runs your unit tests
 ## Learn More
 
 You can learn more in the [Vue CLI Overview](https://cli.vuejs.org/guide).
- 
-To learn Vue, check out the [Vue documentation](https://vuejs.org/).
 
+To learn Vue, check out the [Vue documentation](https://vuejs.org/).

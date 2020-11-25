@@ -1,52 +1,15 @@
-<template>
-  <div class="bx--grid bx--grid--full-width bx--grid--no-gutter repo-page">
-    <div class="bx--row repo-page__r1">
-      <div class="bx--col-lg-16">
-        <RepoTable
-          :headers="headers"
-          :rows="pagedRows"
-          :totalRows="rows.length"
-          @pagination="onPagination"
-          title="Carbon Repositories"
-          helperText="A collection of public Carbon repositories."
-          :loading="$apollo.loading"
-        />
-      </div>
-    </div>
-  </div>
-</template>
+<style lang="scss">
+@import '../../styles/carbon-utils';
+.repo-page .bx--row {
+  padding-top: $spacing-05;
+  padding-bottom: $spacing-05;
+}
+</style>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import RepoTable from './RepoTable';
 import gql from 'graphql-tag';
-
-const headers = [
-  {
-    key: 'name',
-    header: 'Name'
-  },
-  {
-    key: 'createdAt',
-    header: 'Created'
-  },
-  {
-    key: 'updatedAt',
-    header: 'Updated'
-  },
-  {
-    key: 'issueCount',
-    header: 'Open Issues'
-  },
-  {
-    key: 'stars',
-    header: 'Stars'
-  },
-  {
-    key: 'links',
-    header: 'Links'
-  }
-];
-
 const REPO_QUERY = gql`
   query REPO_QUERY {
     # Let's use carbon as our organization
@@ -80,13 +43,46 @@ const REPO_QUERY = gql`
     }
   }
 `;
-
+const headers = [
+  { key: 'name', header: 'Name' },
+  { key: 'createdAt', header: 'Created' },
+  { key: 'updatedAt', header: 'Updated' },
+  { key: 'issueCount', header: 'Open Issues' },
+  { key: 'stars', header: 'Stars' },
+  { key: 'links', header: 'Links' }
+];
+// const rows = [
+//   {
+//     id: '1',
+//     name: 'Repo 1',
+//     createdAt: 'Date',
+//     updatedAt: 'Date',
+//     issueCount: '123',
+//     stars: '456',
+//     links: 'Links'
+//   },
+//   {
+//     id: '2',
+//     name: 'Repo 2',
+//     createdAt: 'Date',
+//     updatedAt: 'Date',
+//     issueCount: '123',
+//     stars: '456',
+//     links: 'Links'
+//   },
+//   {
+//     id: '3',
+//     name: 'Repo 3',
+//     createdAt: 'Date',
+//     updatedAt: 'Date',
+//     issueCount: '123',
+//     stars: '456',
+//     links: 'Links'
+//   }
+// ];
 export default {
   name: 'RepoPage',
   components: { RepoTable },
-  apollo: {
-    organization: REPO_QUERY
-  },
   data() {
     return {
       headers,
@@ -115,28 +111,34 @@ export default {
       return this.rows.slice(this.pageStart, this.pageStart + this.pageSize);
     }
   },
-  // watch: {
-  //   rows() {
-  //     if (this.organization) {
-  //       console.dir(this.organization.repositories.nodes);
-  //     }
-  //   }
-  // },
   methods: {
     onPagination(val) {
       this.pageSize = val.length;
-      this.pageStart = Math.max(0, val.start - 1); // page numbers start at 1 - use max value as a precaution.
+      this.pageStart = val.start;
       this.page = val.page;
     }
+  },
+  apollo: {
+    organization: REPO_QUERY
   }
 };
 </script>
 
-<style lang="scss">
-@import '../../styles/carbon-utils';
-
-.repo-page .bx--row {
-  padding-top: $spacing-05;
-  padding-bottom: $spacing-05;
-}
-</style>
+<template>
+  <div class="bx--grid bx--grid--full-width bx--grid--no-gutter repo-page">
+    <div class="bx--row repo-page__r1">
+      <div class="bx--col-lg-16" style="width: 100%">
+        <!-- {{ this.organization }} -->
+        <repo-table
+          :headers="headers"
+          :rows="pagedRows"
+          :totalRows="rows.length"
+          @pagination="onPagination"
+          title="Carbon Repositories"
+          helperText="A collection of public Carbon repositories."
+          :loading="$apollo.loading"
+        />
+      </div>
+    </div>
+  </div>
+</template>
