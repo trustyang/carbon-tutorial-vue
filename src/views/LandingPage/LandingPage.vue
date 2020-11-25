@@ -1,3 +1,118 @@
+<style lang="scss">
+@import '../../styles/carbon-utils';
+@import './carbon-overrides';
+@import './mixins';
+
+.landing-page__illo {
+  max-width: 100%;
+}
+
+.landing-page__banner {
+  padding-top: $spacing-05;
+  padding-bottom: $spacing-07 * 4;
+  @include landing-page-background;
+}
+
+.landing-page__heading {
+  @include carbon--type-style('productive-heading-05');
+}
+.landing-page__r2 {
+  margin-top: rem(-40px);
+}
+.landing-page__tab-content {
+  padding-top: $layout-05;
+  padding-bottom: $layout-05;
+}
+
+.landing-page__subheading {
+  @include carbon--type-style('productive-heading-03');
+  @include carbon--font-weight('semibold');
+}
+
+.landing-page__p {
+  @include carbon--type-style('productive-heading-03');
+  margin-top: $spacing-06;
+  margin-bottom: $spacing-08;
+
+  @include carbon--breakpoint-between((320px + 1), md) {
+    max-width: 75%;
+  }
+}
+.landing-page__r3 {
+  padding-top: $spacing-09;
+  padding-bottom: $spacing-09;
+  @include landing-page-background;
+}
+
+.landing-page__label {
+  @include carbon--type-style('heading-01');
+}
+</style>
+
+<style lang="scss">
+@import '../../styles/carbon-utils';
+
+.info-card {
+  margin-top: $spacing-09;
+  display: flex;
+  flex-direction: column;
+
+  svg {
+    margin-top: $spacing-09;
+  }
+
+  // top border in only small breakpoints to prevent overrides
+  @include carbon--breakpoint-down(md) {
+    &:not(:nth-child(2)) {
+      border-top: 1px solid $ui-03;
+      padding-top: $spacing-09;
+    }
+  }
+
+  // left border in just the 2nd column items
+  @include carbon--breakpoint(md) {
+    &:nth-child(odd) {
+      border-left: 1px solid $ui-03;
+    }
+  }
+
+  // left border in all items
+  @include carbon--breakpoint(lg) {
+    margin-top: 0;
+    border-left: 1px solid $ui-03;
+
+    svg {
+      margin-top: $layout-06;
+    }
+  }
+}
+</style>
+
+<script>
+import { InfoSection, InfoCard } from '../../components/InfoSection';
+import Globe32 from '@carbon/icons-vue/lib/globe/32';
+import PersonFavorite32 from '@carbon/icons-vue/lib/person--favorite/32';
+import Application32 from '@carbon/icons-vue/lib/application/32';
+
+// const props = {
+//   tabs: { selected: 0, triggerHref: '#', role: 'navigation' },
+//   tab: { href: '#', role: 'presentation', tabIndex: 0 }
+// };
+
+export default {
+  name: 'LandingPage',
+  components: { InfoSection, InfoCard },
+  created() {
+    // Add icons to this
+    Object.assign(this, {
+      Globe32,
+      PersonFavorite32,
+      Application32
+    });
+  }
+};
+</script>
+
 <template>
   <div class="bx--grid bx--grid--full-width landing-page">
     <div class="bx--row landing-page__banner">
@@ -10,10 +125,9 @@
         <h1 class="landing-page__heading">Design &amp; build with Carbon</h1>
       </div>
     </div>
-
     <div class="bx--row landing-page__r2">
       <div class="bx--col bx--no-gutter">
-        <cv-tabs selected="0" aria-label="Tabs navigation">
+        <cv-tabs selected="0" aria-label="Tab navigation">
           <cv-tab label="About">
             <div class="bx--grid bx--grid--no-gutter bx--grid--full-width">
               <div class="bx--row landing-page__tab-content">
@@ -52,7 +166,7 @@
             <div class="bx--grid bx--grid--no-gutter bx--grid--full-width">
               <div class="bx--row landing-page__tab-content">
                 <div class="bx--col-lg-16">
-                  Carbon provides styles and components in Vanilla, Vue,
+                  Carbon provides styles and components in Vanilla, React,
                   Angular, and Vue for anyone building on the web.
                 </div>
               </div>
@@ -61,68 +175,30 @@
         </cv-tabs>
       </div>
     </div>
-
-    <div class="bx--row landing-page__r3">
+    <!-- <div class="bx--row landing-page__r3">
       <div class="bx--col-md-4 bx--col-lg-4">
         <h3 class="landing-page__label">The Principles</h3>
       </div>
       <div class="bx--col-md-4 bx--col-lg-4">Carbon is Open</div>
       <div class="bx--col-md-4 bx--col-lg-4">Carbon is Modular</div>
       <div class="bx--col-md-4 bx--col-lg-4">Carbon is Consistent</div>
-    </div>
+    </div> -->
+    <info-section heading="The Principles" class="landing-page__r3">
+      <info-card
+        heading="Carbon is Open"
+        body="It's a distributed effort, guided by the principles of the open-source movement. Carbon's users are also it's makers, and everyone is encouraged to contribute."
+        :icon="PersonFavorite32"
+      />
+      <info-card
+        heading="Carbon is Modular"
+        body="Carbon's modularity ensures maximum flexibility in execution. It's components are designed to work seamlessly with each other, in whichever combination suits the needs of the user."
+        :icon="Application32"
+      />
+      <info-card
+        heading="Carbon is Consistent"
+        body="Based on the comprehensive IBM Design Language, every element and component of Carbon was designed from the ground up to work elegantly together to ensure consistent, cohesive user experiences."
+        :icon="Globe32"
+      />
+    </info-section>
   </div>
 </template>
-
-<style lang="scss">
-@import '../../styles/carbon-utils';
-@import './carbon-overrides';
-@import './mixins';
-
-.landing-page__illo {
-  max-width: 100%;
-}
-
-.landing-page__banner {
-  padding-top: $spacing-05;
-  padding-bottom: $spacing-07 * 4;
-  @include landing-page-background;
-}
-
-.landing-page__heading {
-  @include carbon--type-style('productive-heading-05');
-}
-
-.landing-page__r2 {
-  margin-top: rem(-40px);
-}
-
-.landing-page__tab-content {
-  padding-top: $layout-05;
-  padding-bottom: $layout-05;
-}
-
-.landing-page__subheading {
-  @include carbon--type-style('productive-heading-03');
-  @include carbon--font-weight('semibold');
-}
-
-.landing-page__p {
-  @include carbon--type-style('productive-heading-03');
-  margin-top: $spacing-06;
-  margin-bottom: $spacing-08;
-
-  @include carbon--breakpoint-between((320px + 1), md) {
-    max-width: 75%;
-  }
-}
-
-.landing-page__r3 {
-  padding-top: $spacing-09;
-  padding-bottom: $spacing-09;
-  @include landing-page-background;
-}
-
-.landing-page__label {
-  @include carbon--type-style('heading-01');
-}
-</style>
