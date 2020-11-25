@@ -13,7 +13,6 @@ export default {
     loading: Boolean
   },
   computed: {
-    
     columns() {
       return this.headers.map(header => header.header);
     },
