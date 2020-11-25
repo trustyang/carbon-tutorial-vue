@@ -47,7 +47,6 @@ const rows = [
     links: 'Links'
   }
 ];
-
 export default {
   name: 'RepoPage',
   components: { RepoTable },
